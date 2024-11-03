@@ -4,31 +4,54 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./pages";
 import "./index.css";
 import Layout from "./components/layout";
+import EditProduct from "./pages/editProduct";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />, // Usa el Layout como el elemento principal
+    element: <Layout />,
     children: [
       {
         path: "",
-        element: <App />, // Renderiza App en la ruta principal
+        element: <App />,
+
+        loader: async () => {
+          const response = await fetch(
+            `http://localhost:3000/products/products`
+          );
+          if (!response.ok) {
+            throw new Error("Productos no encontrados");
+          }
+          return response.json();
+        },
       },
       {
-        path: "productos/Lácteos",
-        element: <div>Todos los productos</div>,
+        path: "products/:category",
+        element: <App />,
+
+        loader: async ({ params }) => {
+          const response = await fetch(
+            `http://localhost:3000/products/getProductByCategory/${params.category}`
+          );
+          if (!response.ok) {
+            throw new Error("Productos no encontrados");
+          }
+          return response.json();
+        },
       },
       {
-        path: "productos/Carnes",
-        element: <div>Todos los productos</div>,
-      },
-      {
-        path: "productos/Frutas y Verduras",
-        element: <div>Todos los productos</div>,
-      },
-      {
-        path: "productos/Granos y Cereales",
-        element: <div>Todos los productos</div>,
+        element: <EditProduct />,
+        path: "product/:productName/:productID",
+
+        loader: async ({ params }) => {
+          const response = await fetch(
+            `http://localhost:3000/products/products/${params.productID}`
+          );
+          if (!response.ok) {
+            throw new Error("Producto no encontrado");
+          }
+          return response.json();
+        },
       },
       // Agrega más rutas aquí según sea necesario
     ],

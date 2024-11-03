@@ -17,7 +17,7 @@ function NavigationBar() {
   }, []);
 
   return (
-    <aside className="bg-[#FEFEFE] h-svh sticky px-4 py-8 flex flex-col gap-12 shadow-lg shadow-black">
+    <aside className="bg-[#FEFEFE] h-svh px-4 py-8 flex flex-col gap-12 shadow-lg shadow-black fixed">
       <h1 className="font-bold text-3xl">SaboresBase</h1>
       <section>
         <details>
@@ -34,10 +34,10 @@ function NavigationBar() {
               Todos los productos
             </NavLink>
           </div>
-          {categories?.map((category) => (
-            <div>
+          {categories?.map((category, index) => (
+            <div key={index}>
               <NavLink
-                to={`/productos/${category}`}
+                to={`/products/${category}`}
                 className={({ isActive }) =>
                   `text-[#7697BB] text-sm px-6 ${
                     isActive ? "underline font-bold text-[#404E68]" : ""

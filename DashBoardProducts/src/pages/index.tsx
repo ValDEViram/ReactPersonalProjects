@@ -1,25 +1,16 @@
-import { useEffect, useState } from "react";
 import { Product } from "../types/Products";
 import ProductsCard from "../components/productsCard";
+import { useLoaderData, useParams } from "react-router-dom";
 
 function App() {
-  const [products, setProducts] = useState<Product[] | null>(null);
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const response = await fetch("http://localhost:3000/products/products");
-      const data: Product[] = await response.json();
-      setProducts(data);
-    };
-
-    fetchProducts();
-  }, []);
-
-  console.log(products);
+  const products = useLoaderData() as Product[];
+  const { category } = useParams<{ category: string }>();
 
   return (
-    <main className="py-12 px-8">
-      <h1 className="font-bold text-3xl mb-4">Todos los productos</h1>
+    <main className="py-12">
+      <h1 className="font-bold text-3xl mb-4">
+        {category ? `${category}` : "Todos los productos"}
+      </h1>
       <section className="grid grid-cols-5 gap-10">
         {products?.map((product) => (
           <ProductsCard key={product.id} product={product} />
