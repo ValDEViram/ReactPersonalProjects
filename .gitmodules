@@ -1,0 +1,3 @@
+[submodule "SkillMentor"]
+	path = SkillMentor
+	url = https://github.com/jevaldev/React-SkillMentor.git
